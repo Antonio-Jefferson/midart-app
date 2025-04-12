@@ -1,0 +1,3 @@
+export const baseUrl = "https://qgwgqecmztnlksloijmq.supabase.co";
+export const anonKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnd2dxZWNtenRubGtzbG9pam1xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0MTczNzIsImV4cCI6MjA1OTk5MzM3Mn0.xgPeb7JK34IwG4jjciOgi4gL0xaWphv6aAR7anLzPZo";
