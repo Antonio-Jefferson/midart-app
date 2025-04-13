@@ -2,13 +2,42 @@ import { Alert, Image, Pressable, Text, TextInput, View } from "react-native";
 import { router } from "expo-router";
 import { styles } from "./styles";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+      webClientId:
+        "178644201416-2fujpu87oe98p4etf5mobohofgm27m6f.apps.googleusercontent.com",
+    });
+  });
+
+  const handleGoogleLogin = async () => {
+    console.log("Google Login");
+    await GoogleSignin.hasPlayServices();
+    const response = await GoogleSignin.signIn();
+    if (response.data?.idToken) {
+      const { data, error } = await supabase.auth.signInWithIdToken({
+        provider: "google",
+        token: response.data.idToken,
+      });
+
+      if (error) {
+        Alert.alert(error.message);
+        return;
+      }
+      router.replace("/(system)/home");
+    } else {
+      Alert.alert("Não foi possível fazer o login com o Google");
+    }
+  };
 
   const hendleLogin = async () => {
     setLoading(true);
@@ -63,7 +92,7 @@ export default function LoginScreen() {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={styles.googleButton}>
+        <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
           <View style={styles.googleContent}>
             <Image
               source={{

@@ -1,9 +1,11 @@
 import { supabase } from "@/app/lib/supabase";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { View, Text, Alert, Pressable } from "react-native";
 
 export default function HomeScreen() {
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
+    await GoogleSignin.signOut();
 
     if (error) {
       Alert.alert(error.message);

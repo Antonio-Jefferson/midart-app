@@ -39,7 +39,21 @@ export const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
+
   buttonText: {
     color: "#fff",
+  },
+
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    backgroundColor: "#fff",
+    overflow: "hidden",
+    width: "100%",
+  },
+  picker: {
+    height: 50,
+    width: "100%",
   },
 });

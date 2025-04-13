@@ -13,21 +13,41 @@ import { styles } from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
 
 export default function RegisterScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [drawingLevel, setDrawingLevel] = useState("");
+  const [birthDate, setBirthDate] = useState<Date>(new Date());
   const [loading, setLoading] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+
+  const onChange = (event: any, selectedDate: any) => {
+    setShowPicker(false);
+    if (selectedDate) {
+      setBirthDate(selectedDate);
+    }
+  };
 
   const hendleSignUp = async () => {
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          name: name,
+          drawing_level: drawingLevel,
+          birth_date: birthDate,
+        },
+      },
     });
 
     if (error) {
+      console.log(error);
       Alert.alert(error.message);
       setLoading(false);
       return;
@@ -59,6 +79,46 @@ export default function RegisterScreen() {
                 value={name}
                 onChangeText={setName}
               />
+            </View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <View style={{ width: "50%" }}>
+                <Text style={styles.label}>Nível de Desenho</Text>
+                <View style={styles.pickerContainer}>
+                  <Picker
+                    selectedValue={drawingLevel}
+                    onValueChange={(itemValue: string) =>
+                      setDrawingLevel(itemValue)
+                    }
+                    style={styles.picker}
+                  >
+                    <Picker.Item label="INICIANTE" value="INICIANTE" />
+                    <Picker.Item label="INTERMEDIÁRIO" value="INTERMEDIARIO" />
+                    <Picker.Item label="AVANÇADO" value="AVANCADO" />
+                  </Picker>
+                </View>
+              </View>
+              <View>
+                <Text style={{ fontSize: 16, marginBottom: 8 }}>
+                  Data de Nascimento
+                </Text>
+
+                <Button
+                  title={birthDate.toLocaleDateString("pt-BR")}
+                  onPress={() => setShowPicker(true)}
+                />
+
+                {showPicker && (
+                  <DateTimePicker
+                    value={birthDate}
+                    mode="date"
+                    display="calendar"
+                    onChange={onChange}
+                    maximumDate={new Date()}
+                  />
+                )}
+              </View>
             </View>
             <View>
               <Text style={styles.label}>Email</Text>
