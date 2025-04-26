@@ -1,7 +1,15 @@
-import { Alert, Image, Pressable, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  Image,
+  Pressable,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { router } from "expo-router";
 import { styles } from "./styles";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
@@ -13,6 +21,7 @@ export default function LoginScreen() {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [keepConnected, setKeepConnected] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -23,7 +32,6 @@ export default function LoginScreen() {
   });
 
   const handleGoogleLogin = async () => {
-    console.log("Google Login");
     await GoogleSignin.hasPlayServices();
     const response = await GoogleSignin.signIn();
     if (response.data?.idToken) {
@@ -92,19 +100,30 @@ export default function LoginScreen() {
 
         <View>
           <Text style={styles.label}>Senha</Text>
-          <TextInput
-            secureTextEntry
-            style={[
-              styles.input,
-              { borderColor: isPasswordFocused ? "#F4791A" : "#CBC2C2" },
-            ]}
-            placeholderTextColor="#CBC2C2"
-            placeholder="Digite sua senha"
-            value={password}
-            onChangeText={setPassword}
-            onFocus={() => setIsPasswordFocused(true)}
-            onBlur={() => setIsPasswordFocused(false)}
-          />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              secureTextEntry={!showPassword}
+              style={[
+                styles.input,
+                { borderColor: isPasswordFocused ? "#F4791A" : "#CBC2C2" },
+              ]}
+              placeholder="Insira sua senha"
+              value={password}
+              onChangeText={setPassword}
+              onFocus={() => setIsPasswordFocused(true)}
+              onBlur={() => setIsPasswordFocused(false)}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Feather
+                name={showPassword ? "eye" : "eye-off"}
+                size={20}
+                color="#A9A9A9"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.containerFooter}>
           <View

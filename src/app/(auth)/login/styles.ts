@@ -147,4 +147,23 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "medium",
   },
+
+  passwordContainer: {
+    position: "relative",
+    justifyContent: "center",
+  },
+  inputPassword: {
+    height: 48,
+    borderColor: "#CBC2C2",
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    borderRadius: 100,
+    paddingRight: 40,
+    marginBottom: 10,
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 15,
+    top: 14,
+  },
 });
