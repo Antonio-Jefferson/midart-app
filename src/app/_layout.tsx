@@ -13,24 +13,30 @@ export default function RootLayout() {
 
 function AuthStack() {
   const { setAuth } = useAuth();
+  console.log("AuthStack", setAuth);
   useEffect(() => {
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        setAuth(session.user);
-        router.replace("/(system)/home");
-        return;
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (session) {
+          setAuth(session.user);
+          router.replace("/(system)/home");
+        } else {
+          setAuth(null);
+          router.replace("/(auth)/main");
+        }
       }
+    );
 
-      setAuth(null);
-      router.replace("/(auth)/main");
-    });
+    return () => listener?.subscription.unsubscribe();
   }, []);
+
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="main" options={{ headerShown: false }} />
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="register" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)/main" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)/register" options={{ headerShown: false }} />
+      <Stack.Screen name="(system)/home" options={{ headerShown: false }} />
     </Stack>
   );
 }

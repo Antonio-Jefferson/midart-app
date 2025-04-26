@@ -1,28 +1,38 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, ImageBackground } from "react-native";
 import { styles } from "./styles";
 import { Link } from "expo-router";
 
 export default function MainScreen() {
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Seja a inspiração!!</Text>
-        <Text style={styles.subtitle}>
-          Junte-se à nossa plataforma criativa
-        </Text>
+      <ImageBackground
+        source={require("../../../../assets/images/bg-fundo.png")}
+        style={styles.imageBackground}
+      ></ImageBackground>
 
-        <Link href="/login" asChild>
+      <ImageBackground
+        source={require("../../../../assets/images/bg-main.png")}
+        style={styles.container}
+        imageStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
+      >
+        <View style={{ width: "100%", alignItems: "flex-start" }}>
+          <Text style={styles.title}>
+            Seja a inspiração! Junte-se à nossa Plataforma criativa.
+          </Text>
+        </View>
+
+        <Link href="/(auth)/login" asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Entrar</Text>
           </TouchableOpacity>
         </Link>
 
-        <Link href="/register" asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Registrar-se</Text>
+        <Link href="/(auth)/register" asChild>
+          <TouchableOpacity style={styles.buttonSecondary}>
+            <Text style={styles.buttonTextSecondary}>Registrar-se</Text>
           </TouchableOpacity>
         </Link>
-      </View>
+      </ImageBackground>
     </View>
   );
 }

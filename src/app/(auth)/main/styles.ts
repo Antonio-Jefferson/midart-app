@@ -3,38 +3,53 @@ import { StyleSheet, Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
+  imageBackground: {
+    position: "relative",
+    width: "100%",
+    height: "70%",
+  },
   container: {
     position: "absolute",
     bottom: 0,
     width: "100%",
-    height: "70%",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    backgroundColor: "#2e3a59",
+    height: "60%",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: "#275982",
     padding: 20,
     alignItems: "center",
     justifyContent: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     color: "#fff",
     fontWeight: "bold",
     marginBottom: 10,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#ccc",
-    marginBottom: 30,
-    textAlign: "center",
+    textAlign: "left", // já faz o alinhamento à esquerda
   },
   button: {
-    width: width * 0.7,
-    backgroundColor: "#4f83cc",
+    width: 364,
+    height: 50,
+    backgroundColor: "#F69143",
     paddingVertical: 12,
-    borderRadius: 10,
-    marginTop: 10,
+    borderRadius: 100,
+    marginTop: 46,
     alignItems: "center",
+  },
+
+  buttonSecondary: {
+    width: 364,
+    height: 50,
+    backgroundColor: "#FFF",
+    paddingVertical: 12,
+    borderRadius: 100,
+    marginTop: 30,
+    alignItems: "center",
+  },
+  buttonTextSecondary: {
+    color: "#073B4C",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   buttonText: {
     color: "#fff",

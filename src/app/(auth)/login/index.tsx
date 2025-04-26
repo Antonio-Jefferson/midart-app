@@ -10,6 +10,9 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [keepConnected, setKeepConnected] = useState(false);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -58,32 +61,71 @@ export default function LoginScreen() {
     <View style={styles.main}>
       <Pressable>
         <Ionicons
-          style={styles.iconBack}
           name="arrow-back"
           size={24}
-          color="#f5f5f5"
+          color="#275982"
           onPress={() => router.back()}
         />
       </Pressable>
+      <View style={styles.header}>
+        <Text style={styles.title}>Bem vindo!</Text>
+        <Text style={styles.subtitle}>
+          Faça login para continuar sua jornada criativa.
+        </Text>
+      </View>
       <View style={styles.container}>
         <View>
           <Text style={styles.label}>Email</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              { borderColor: isEmailFocused ? "#F4791A" : "#CBC2C2" },
+            ]}
+            placeholderTextColor="#CBC2C2"
             placeholder="Digite seu email"
             value={email}
             onChangeText={setEmail}
+            onFocus={() => setIsEmailFocused(true)}
+            onBlur={() => setIsEmailFocused(false)}
           />
         </View>
+
         <View>
           <Text style={styles.label}>Senha</Text>
           <TextInput
             secureTextEntry
-            style={styles.input}
+            style={[
+              styles.input,
+              { borderColor: isPasswordFocused ? "#F4791A" : "#CBC2C2" },
+            ]}
+            placeholderTextColor="#CBC2C2"
             placeholder="Digite sua senha"
             value={password}
             onChangeText={setPassword}
+            onFocus={() => setIsPasswordFocused(true)}
+            onBlur={() => setIsPasswordFocused(false)}
           />
+        </View>
+        <View style={styles.containerFooter}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Pressable
+              onPress={() => setKeepConnected(!keepConnected)}
+              style={{ marginRight: 8 }}
+            >
+              <Ionicons
+                name={keepConnected ? "checkbox" : "square-outline"}
+                size={16}
+                color={keepConnected ? "#F4791A" : "#CBC2C2"}
+              />
+            </Pressable>
+            <Text style={styles.meConnectText}>Mantenha-me conectado</Text>
+          </View>
+          <Text style={styles.forgotPassword}>Esqueceu a senha?</Text>
         </View>
         <Pressable onPress={hendleLogin}>
           <View style={styles.button}>
@@ -92,6 +134,11 @@ export default function LoginScreen() {
             </Text>
           </View>
         </Pressable>
+        <View style={styles.separator}>
+          <View style={styles.separatorLine}></View>
+          <Text style={styles.separatorText}>ou</Text>
+          <View style={styles.separatorLine}></View>
+        </View>
         <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
           <View style={styles.googleContent}>
             <Image
@@ -103,6 +150,13 @@ export default function LoginScreen() {
             <Text style={styles.googleText}>Entrar com Google</Text>
           </View>
         </Pressable>
+
+        <View style={styles.footer}>
+          <Text style={styles.dontHaveAccount}>
+            Ainda não possui uma conta?
+          </Text>
+          <Text style={styles.registerText}>Registrar-se</Text>
+        </View>
       </View>
     </View>
   );
