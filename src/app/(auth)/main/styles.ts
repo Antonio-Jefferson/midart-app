@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   imageBackground: {
     position: "relative",
     width: "100%",
-    height: "70%",
+    height: "82%",
   },
   container: {
     position: "absolute",
@@ -19,6 +19,20 @@ export const styles = StyleSheet.create({
     padding: 20,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
+  },
+  backgroundImage: {
+    position: "absolute",
+    width: "120%",
+    height: "120%",
+    resizeMode: "cover",
+  },
+  content: {
+    flex: 1,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   title: {
     fontSize: 32,
