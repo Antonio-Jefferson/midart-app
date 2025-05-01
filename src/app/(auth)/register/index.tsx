@@ -176,7 +176,6 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="00/00/00"
-                  keyboardType="numeric"
                   maxLength={8}
                   value={watch("birthDate")}
                   onChangeText={(text) => setValue("birthDate", text)}

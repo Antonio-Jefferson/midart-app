@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     textAlign: "left", // já faz o alinhamento à esquerda
   },
   button: {
-    width: 364,
+    width: "100%",
     height: 50,
     backgroundColor: "#F69143",
     paddingVertical: 12,
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
   },
 
   buttonSecondary: {
-    width: 364,
+    width: "100%",
     height: 50,
     backgroundColor: "#FFF",
     paddingVertical: 12,

@@ -65,6 +65,7 @@ export default function LoginScreen() {
   };
 
   useEffect(() => {
+    setLoading(true);
     GoogleSignin.configure({
       scopes: ["https://www.googleapis.com/auth/drive.readonly"],
       webClientId:
@@ -240,7 +241,12 @@ export default function LoginScreen() {
           <Text style={styles.dontHaveAccount}>
             Ainda não possui uma conta?
           </Text>
-          <Text style={styles.registerText}>Registrar-se</Text>
+          <Text
+            onPress={() => router.push("/(auth)/register")}
+            style={styles.registerText}
+          >
+            Registrar-se
+          </Text>
         </View>
       </View>
     </View>
