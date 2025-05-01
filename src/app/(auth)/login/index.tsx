@@ -1,5 +1,4 @@
 import {
-  Alert,
   Image,
   Pressable,
   Text,
@@ -13,15 +12,47 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { loginSchema, LoginSchema } from "@/schemas/loginSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Toast from "react-native-toast-message";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
+
   const [loading, setLoading] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [keepConnected, setKeepConnected] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const onSubmit = async (data: LoginSchema) => {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
+
+    if (error) {
+      Toast.show({
+        type: "error",
+        text1: "Erro no login",
+        text2: error.message,
+      });
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
+    router.replace("/(system)/home");
+  };
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -41,30 +72,22 @@ export default function LoginScreen() {
       });
 
       if (error) {
-        Alert.alert(error.message);
+        Toast.show({
+          type: "error",
+          text1: "Erro no login com o Google",
+          text2: error.message,
+        });
         return;
       }
       router.replace("/(system)/home");
     } else {
-      Alert.alert("Não foi possível fazer o login com o Google");
+      Toast.show({
+        type: "error",
+        text1: "Erro no login",
+      });
     }
   };
 
-  const hendleLogin = async () => {
-    setLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-
-    if (error) {
-      Alert.alert(error.message);
-      setLoading(false);
-      return;
-    }
-    setLoading(false);
-    router.replace("/(system)/home");
-  };
   return (
     <View style={styles.main}>
       <Pressable>
@@ -91,11 +114,13 @@ export default function LoginScreen() {
             ]}
             placeholderTextColor="#CBC2C2"
             placeholder="Digite seu email"
-            value={email}
-            onChangeText={setEmail}
+            onChangeText={(text) => setValue("email", text)}
             onFocus={() => setIsEmailFocused(true)}
             onBlur={() => setIsEmailFocused(false)}
           />
+          {errors.email && (
+            <Text style={{ color: "red" }}>{errors.email.message}</Text>
+          )}
         </View>
 
         <View>
@@ -108,8 +133,7 @@ export default function LoginScreen() {
                 { borderColor: isPasswordFocused ? "#F4791A" : "#CBC2C2" },
               ]}
               placeholder="Insira sua senha"
-              value={password}
-              onChangeText={setPassword}
+              onChangeText={(text) => setValue("password", text)}
               onFocus={() => setIsPasswordFocused(true)}
               onBlur={() => setIsPasswordFocused(false)}
             />
@@ -146,7 +170,7 @@ export default function LoginScreen() {
           </View>
           <Text style={styles.forgotPassword}>Esqueceu a senha?</Text>
         </View>
-        <Pressable onPress={hendleLogin}>
+        <Pressable onPress={handleSubmit(onSubmit)}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>
               {loading ? "Aguarde..." : "Entrar"}

@@ -2,11 +2,13 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { router, Stack } from "expo-router";
 import { useEffect } from "react";
 import { supabase } from "./lib/supabase";
+import Toast from "react-native-toast-message";
 
 export default function RootLayout() {
   return (
     <AuthProvider>
       <AuthStack />
+      <Toast />
     </AuthProvider>
   );
 }
