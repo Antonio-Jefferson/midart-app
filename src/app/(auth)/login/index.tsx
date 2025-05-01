@@ -135,7 +135,7 @@ export default function LoginScreen() {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
             >
-              <Ionicons name="warning" size={15} color="red" />
+              <Ionicons name="warning-outline" size={15} color="red" />
               <Text style={{ color: "red" }}>{errors.email.message}</Text>
             </View>
           )}
@@ -173,7 +173,7 @@ export default function LoginScreen() {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
             >
-              <Ionicons name="warning" size={15} color="red" />
+              <Ionicons name="warning-outline" size={15} color="red" />
               <Text style={{ color: "red" }}>{errors.password.message}</Text>
             </View>
           )}

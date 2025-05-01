@@ -12,21 +12,80 @@ import {
 import { router } from "expo-router";
 import { styles } from "./styles";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { Picker } from "@react-native-picker/picker";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { registerSchema, RegisterSchema } from "@/schemas/registerShema";
+import Toast from "react-native-toast-message";
 
 export default function RegisterScreen() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [drawingLevel, setDrawingLevel] = useState("");
-  const [birthDate, setBirthDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    watch,
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+    mode: "onChange",
+  });
+
+  const email = watch("email");
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
+  const name = watch("name");
+  const birthDate = watch("birthDate");
+  const drawingLevelExist = watch("drawingLevel");
+  const isFormValid =
+    email?.length > 0 &&
+    password?.length > 0 &&
+    confirmPassword?.length > 0 &&
+    name?.length > 0 &&
+    birthDate?.length > 0 &&
+    drawingLevelExist?.length > 0;
+
+  useEffect(() => {
+    register("email");
+    register("password");
+    register("confirmPassword");
+    register("name");
+    register("drawingLevel");
+    register("birthDate");
+  }, [register]);
+  const onSubmit = async (dataRegister: RegisterSchema) => {
+    setLoading(true);
+    const { data, error } = await supabase.auth.signUp({
+      email: dataRegister.email,
+      password: dataRegister.password,
+      options: {
+        data: {
+          name: dataRegister.name,
+          drawing_level: dataRegister.drawingLevel,
+          birth_date: dataRegister.birthDate,
+        },
+      },
+    });
+
+    if (error) {
+      Toast.show({
+        type: "error",
+        text1: "Erro no cadastro",
+        text2: error.message,
+      });
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
+    router.replace("/(auth)/login");
+  };
 
   const handleGoogleLogin = async () => {
     await GoogleSignin.hasPlayServices();
@@ -38,36 +97,20 @@ export default function RegisterScreen() {
       });
 
       if (error) {
-        Alert.alert(error.message);
+        Toast.show({
+          type: "error",
+          text1: "Erro no login com o Google",
+          text2: error.message,
+        });
         return;
       }
       router.replace("/(system)/home");
     } else {
-      Alert.alert("Não foi possível fazer o login com o Google");
+      Toast.show({
+        type: "error",
+        text1: "Erro no login",
+      });
     }
-  };
-  const hendleSignUp = async () => {
-    setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: {
-          name: name,
-          drawing_level: drawingLevel,
-          birth_date: birthDate,
-        },
-      },
-    });
-
-    if (error) {
-      Alert.alert(error.message);
-      setLoading(false);
-      return;
-    }
-
-    setLoading(false);
-    router.replace("/(auth)/login");
   };
 
   return (
@@ -94,9 +137,17 @@ export default function RegisterScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="Insira seu nome"
-                value={name}
-                onChangeText={setName}
+                value={watch("name")}
+                onChangeText={(text) => setValue("name", text)}
               />
+              {errors.name && (
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+                >
+                  <Ionicons name="warning-outline" size={15} color="red" />
+                  <Text style={{ color: "red" }}>{errors.name.message}</Text>
+                </View>
+              )}
             </View>
 
             <View>
@@ -104,11 +155,19 @@ export default function RegisterScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="Insira seu e-mail"
-                value={email}
-                onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                value={watch("email")}
+                onChangeText={(text) => setValue("email", text)}
               />
+              {errors.email && (
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+                >
+                  <Ionicons name="warning-outline" size={15} color="red" />
+                  <Text style={{ color: "red" }}>{errors.email.message}</Text>
+                </View>
+              )}
             </View>
 
             <View style={styles.row}>
@@ -117,29 +176,57 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="00/00/00"
-                  value={birthDate}
-                  onChangeText={setBirthDate}
                   keyboardType="numeric"
                   maxLength={8}
+                  value={watch("birthDate")}
+                  onChangeText={(text) => setValue("birthDate", text)}
                 />
+                {errors.birthDate && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 5,
+                    }}
+                  >
+                    <Ionicons name="warning-outline" size={15} color="red" />
+                    <Text style={{ color: "red" }}>
+                      {errors.birthDate.message}
+                    </Text>
+                  </View>
+                )}
               </View>
-
               <View style={styles.drawingLevelContainer}>
                 <Text style={styles.label}>Nível de desenho</Text>
                 <View style={styles.pickerContainer}>
                   <Picker
                     selectedValue={drawingLevel}
-                    onValueChange={(itemValue: string) =>
-                      setDrawingLevel(itemValue)
-                    }
+                    onValueChange={(itemValue: string) => {
+                      setDrawingLevel(itemValue);
+                      setValue("drawingLevel", itemValue);
+                    }}
                     mode="dropdown"
                     style={styles.picker}
                   >
-                    <Picker.Item label="Selecione" />
-                    <Picker.Item label="Iniciante" />
-                    <Picker.Item label="Intermediário" />
-                    <Picker.Item label="Avançado" />
+                    <Picker.Item label="Selecione" value="" />
+                    <Picker.Item label="Iniciante" value="Iniciante" />
+                    <Picker.Item label="Intermediário" value="Intermediário" />
+                    <Picker.Item label="Avançado" value="Avançado" />
                   </Picker>
+                  {errors.drawingLevel && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 5,
+                      }}
+                    >
+                      <Ionicons name="warning-outline" size={15} color="red" />
+                      <Text style={{ color: "red" }}>
+                        {errors.drawingLevel.message}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               </View>
             </View>
@@ -151,8 +238,8 @@ export default function RegisterScreen() {
                   secureTextEntry={!showPassword}
                   style={styles.inputPassword}
                   placeholder="Insira sua senha"
-                  value={password}
-                  onChangeText={setPassword}
+                  value={watch("password")}
+                  onChangeText={(text) => setValue("password", text)}
                 />
                 <TouchableOpacity
                   style={styles.eyeIcon}
@@ -164,6 +251,20 @@ export default function RegisterScreen() {
                     color="#A9A9A9"
                   />
                 </TouchableOpacity>
+                {errors.password && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 5,
+                    }}
+                  >
+                    <Ionicons name="warning-outline" size={15} color="red" />
+                    <Text style={{ color: "red" }}>
+                      {errors.password.message}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
 
@@ -174,8 +275,8 @@ export default function RegisterScreen() {
                   secureTextEntry={!showConfirmPassword}
                   style={styles.inputPassword}
                   placeholder="Repita a senha anterior"
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
+                  value={watch("confirmPassword")}
+                  onChangeText={(text) => setValue("confirmPassword", text)}
                 />
                 <TouchableOpacity
                   style={styles.eyeIcon}
@@ -187,11 +288,33 @@ export default function RegisterScreen() {
                     color="#A9A9A9"
                   />
                 </TouchableOpacity>
+                {errors.confirmPassword && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 5,
+                    }}
+                  >
+                    <Ionicons name="warning-outline" size={15} color="red" />
+                    <Text style={{ color: "red" }}>
+                      {errors.confirmPassword.message}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
 
-            <Pressable onPress={hendleSignUp}>
-              <View style={styles.button}>
+            <Pressable
+              onPress={handleSubmit(onSubmit)}
+              disabled={!isFormValid || loading}
+            >
+              <View
+                style={[
+                  styles.button,
+                  (!isFormValid || loading) && { opacity: 0.5 },
+                ]}
+              >
                 <Text style={styles.buttonText}>
                   {loading ? "Carregando..." : "Entrar"}
                 </Text>

@@ -35,6 +35,7 @@ export const styles = StyleSheet.create({
     width: "100%",
   },
   title: {
+    width: "100%",
     fontSize: 32,
     color: "#fff",
     fontWeight: "bold",
