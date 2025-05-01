@@ -16,6 +16,7 @@ import { loginSchema, LoginSchema } from "@/schemas/loginSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Toast from "react-native-toast-message";
+import facebookIcon from "../../../../assets/images/facebook.png";
 
 export default function LoginScreen() {
   const {
@@ -40,9 +41,6 @@ export default function LoginScreen() {
     register("password");
   }, [register]);
 
-  const email = watch("email");
-  const password = watch("password");
-  const isFormValid = email?.length > 0 && password?.length > 0;
   const onSubmit = async (data: LoginSchema) => {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
@@ -65,7 +63,6 @@ export default function LoginScreen() {
   };
 
   useEffect(() => {
-    setLoading(true);
     GoogleSignin.configure({
       scopes: ["https://www.googleapis.com/auth/drive.readonly"],
       webClientId:
@@ -123,7 +120,6 @@ export default function LoginScreen() {
               styles.input,
               { borderColor: isEmailFocused ? "#F4791A" : "#CBC2C2" },
             ]}
-            placeholderTextColor="#CBC2C2"
             placeholder="Digite seu email"
             onChangeText={(text) =>
               setValue("email", text, { shouldValidate: true })
@@ -205,16 +201,8 @@ export default function LoginScreen() {
             Esqueceu a senha?
           </Text>
         </View>
-        <Pressable
-          onPress={handleSubmit(onSubmit)}
-          disabled={!isFormValid || loading}
-        >
-          <View
-            style={[
-              styles.button,
-              (!isFormValid || loading) && { opacity: 0.5 },
-            ]}
-          >
+        <Pressable onPress={handleSubmit(onSubmit)} disabled={loading}>
+          <View style={styles.button}>
             <Text style={styles.buttonText}>
               {loading ? "Aguarde..." : "Entrar"}
             </Text>
@@ -225,17 +213,25 @@ export default function LoginScreen() {
           <Text style={styles.separatorText}>ou</Text>
           <View style={styles.separatorLine}></View>
         </View>
-        <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
-          <View style={styles.googleContent}>
-            <Image
-              source={{
-                uri: "https://img.icons8.com/?size=512&id=17949&format=png",
-              }}
-              style={styles.googleIcon}
-            />
-            <Text style={styles.googleText}>Entrar com Google</Text>
-          </View>
-        </Pressable>
+        <View style={styles.socialButtons}>
+          <Pressable>
+            <View style={styles.facebookButton}>
+              <View style={styles.facebookContent}>
+                <Image source={facebookIcon} style={styles.facebookIcon} />
+              </View>
+            </View>
+          </Pressable>
+          <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
+            <View style={styles.googleContent}>
+              <Image
+                source={{
+                  uri: "https://img.icons8.com/?size=512&id=17949&format=png",
+                }}
+                style={styles.googleIcon}
+              />
+            </View>
+          </Pressable>
+        </View>
 
         <View style={styles.footer}>
           <Text style={styles.dontHaveAccount}>

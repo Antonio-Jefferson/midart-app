@@ -25,9 +25,8 @@ export default function MainScreen() {
 
         {/* Conteúdo acima da imagem */}
         <View style={styles.content}>
-          <Text style={styles.title}>
-            Seja a inspiração! Junte-se à nossa Plataforma criativa.
-          </Text>
+          <Text style={styles.title}>Seja a inspiração! Junte-se à nossa</Text>
+          <Text style={styles.title}>Plataforma criativa.</Text>
 
           <Link href="/(auth)/login" asChild>
             <TouchableOpacity style={styles.button}>

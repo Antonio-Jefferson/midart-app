@@ -95,17 +95,17 @@ export const styles = StyleSheet.create({
     color: "#275982",
   },
 
-  googleButton: {
-    marginTop: 16,
-    backgroundColor: "#fff",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 100,
+  socialButtons: {
+    width: "100%",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "center",
-    borderColor: "#E0E0E0",
-    borderWidth: 1,
+    gap: 14,
+  },
+
+  googleButton: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
   },
 
   googleContent: {
@@ -114,15 +114,26 @@ export const styles = StyleSheet.create({
   },
 
   googleIcon: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
     marginRight: 10,
   },
 
-  googleText: {
-    color: "#000",
-    fontWeight: "500",
-    fontSize: 16,
+  facebookButton: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
+  },
+
+  facebookContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  facebookIcon: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
   },
 
   footer: {
@@ -136,7 +147,7 @@ export const styles = StyleSheet.create({
   },
 
   dontHaveAccount: {
-    fontSize: 16,
+    fontSize: 17,
     flexDirection: "row",
     alignItems: "center",
     color: "#275982",

@@ -95,7 +95,7 @@ export const styles = StyleSheet.create({
   },
 
   drawingLevelContainer: {
-    width: "50%",
+    width: "45%",
   },
 
   row: {
@@ -125,7 +125,7 @@ export const styles = StyleSheet.create({
   separatorContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 16,
+    marginVertical: 32,
   },
   line: {
     flex: 1,
@@ -144,23 +144,24 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
+
   socialIconsContainer: {
     flexDirection: "row",
     justifyContent: "center",
     gap: 20,
   },
 
-  googleButton: {
-    marginTop: 16,
-    backgroundColor: "#fff",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 100,
+  socialButtons: {
+    width: "100%",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "center",
-    borderColor: "#E0E0E0",
-    borderWidth: 1,
+    gap: 14,
+  },
+
+  googleButton: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
   },
 
   googleContent: {
@@ -169,14 +170,25 @@ export const styles = StyleSheet.create({
   },
 
   googleIcon: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
     marginRight: 10,
   },
 
-  googleText: {
-    color: "#000",
-    fontWeight: "500",
-    fontSize: 16,
+  facebookButton: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
+  },
+
+  facebookContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  facebookIcon: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
   },
 });

@@ -39,7 +39,6 @@ export const styles = StyleSheet.create({
     fontSize: 32,
     color: "#fff",
     fontWeight: "bold",
-    marginBottom: 10,
     textAlign: "left", // já faz o alinhamento à esquerda
   },
   button: {

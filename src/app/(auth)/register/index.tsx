@@ -1,5 +1,4 @@
 import {
-  Alert,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -20,8 +19,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { registerSchema, RegisterSchema } from "@/schemas/registerShema";
 import Toast from "react-native-toast-message";
+import { TextInputMask } from "react-native-masked-text";
+import facebookIcon from "../../../../assets/images/facebook.png";
 
 export default function RegisterScreen() {
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] =
+    useState(false);
+  const [isNameFocused, setIsNameFocused] = useState(false);
+  const [isBirthDateFocused, setIsBirthDateFocused] = useState(false);
+  const [isDrawingLevelFocused, setIsDrawingLevelFocused] = useState(false);
   const [drawingLevel, setDrawingLevel] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -36,20 +44,6 @@ export default function RegisterScreen() {
     resolver: zodResolver(registerSchema),
     mode: "onChange",
   });
-
-  const email = watch("email");
-  const password = watch("password");
-  const confirmPassword = watch("confirmPassword");
-  const name = watch("name");
-  const birthDate = watch("birthDate");
-  const drawingLevelExist = watch("drawingLevel");
-  const isFormValid =
-    email?.length > 0 &&
-    password?.length > 0 &&
-    confirmPassword?.length > 0 &&
-    name?.length > 0 &&
-    birthDate?.length > 0 &&
-    drawingLevelExist?.length > 0;
 
   useEffect(() => {
     register("email");
@@ -114,7 +108,7 @@ export default function RegisterScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingBottom: 30 }}
@@ -135,10 +129,15 @@ export default function RegisterScreen() {
             <View>
               <Text style={styles.label}>Nome</Text>
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  { borderColor: isNameFocused ? "#F4791A" : "#CBC2C2" },
+                ]}
                 placeholder="Insira seu nome"
                 value={watch("name")}
                 onChangeText={(text) => setValue("name", text)}
+                onFocus={() => setIsNameFocused(true)}
+                onBlur={() => setIsNameFocused(false)}
               />
               {errors.name && (
                 <View
@@ -153,12 +152,17 @@ export default function RegisterScreen() {
             <View>
               <Text style={styles.label}>E-mail</Text>
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  { borderColor: isEmailFocused ? "#F4791A" : "#CBC2C2" },
+                ]}
                 placeholder="Insira seu e-mail"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 value={watch("email")}
                 onChangeText={(text) => setValue("email", text)}
+                onFocus={() => setIsEmailFocused(true)}
+                onBlur={() => setIsEmailFocused(false)}
               />
               {errors.email && (
                 <View
@@ -173,12 +177,20 @@ export default function RegisterScreen() {
             <View style={styles.row}>
               <View style={styles.birthDateContainer}>
                 <Text style={styles.label}>Data de nascimento</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="00/00/00"
-                  maxLength={8}
+                <TextInputMask
+                  type={"datetime"}
+                  style={[
+                    styles.input,
+                    { borderColor: isBirthDateFocused ? "#F4791A" : "#CBC2C2" },
+                  ]}
+                  options={{
+                    format: "DD/MM/YYYY",
+                  }}
+                  placeholder="DD/MM/AAAA"
                   value={watch("birthDate")}
                   onChangeText={(text) => setValue("birthDate", text)}
+                  onFocus={() => setIsBirthDateFocused(true)}
+                  onBlur={() => setIsBirthDateFocused(false)}
                 />
                 {errors.birthDate && (
                   <View
@@ -205,28 +217,37 @@ export default function RegisterScreen() {
                       setValue("drawingLevel", itemValue);
                     }}
                     mode="dropdown"
-                    style={styles.picker}
+                    style={[
+                      styles.picker,
+                      {
+                        borderColor: isDrawingLevelFocused
+                          ? "#F4791A"
+                          : "#CBC2C2",
+                      },
+                    ]}
+                    onFocus={() => setIsDrawingLevelFocused(true)}
+                    onBlur={() => setIsDrawingLevelFocused(false)}
                   >
                     <Picker.Item label="Selecione" value="" />
                     <Picker.Item label="Iniciante" value="Iniciante" />
                     <Picker.Item label="Intermediário" value="Intermediário" />
                     <Picker.Item label="Avançado" value="Avançado" />
                   </Picker>
-                  {errors.drawingLevel && (
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 5,
-                      }}
-                    >
-                      <Ionicons name="warning-outline" size={15} color="red" />
-                      <Text style={{ color: "red" }}>
-                        {errors.drawingLevel.message}
-                      </Text>
-                    </View>
-                  )}
                 </View>
+                {errors.drawingLevel && (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 5,
+                    }}
+                  >
+                    <Ionicons name="warning-outline" size={15} color="red" />
+                    <Text style={{ color: "red" }}>
+                      {errors.drawingLevel.message}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
 
@@ -235,10 +256,15 @@ export default function RegisterScreen() {
               <View style={styles.passwordContainer}>
                 <TextInput
                   secureTextEntry={!showPassword}
-                  style={styles.inputPassword}
+                  style={[
+                    styles.inputPassword,
+                    { borderColor: isPasswordFocused ? "#F4791A" : "#CBC2C2" },
+                  ]}
                   placeholder="Insira sua senha"
                   value={watch("password")}
                   onChangeText={(text) => setValue("password", text)}
+                  onFocus={() => setIsPasswordFocused(true)}
+                  onBlur={() => setIsPasswordFocused(false)}
                 />
                 <TouchableOpacity
                   style={styles.eyeIcon}
@@ -272,10 +298,19 @@ export default function RegisterScreen() {
               <View style={styles.passwordContainer}>
                 <TextInput
                   secureTextEntry={!showConfirmPassword}
-                  style={styles.inputPassword}
+                  style={[
+                    styles.inputPassword,
+                    {
+                      borderColor: isConfirmPasswordFocused
+                        ? "#F4791A"
+                        : "#CBC2C2",
+                    },
+                  ]}
                   placeholder="Repita a senha anterior"
                   value={watch("confirmPassword")}
                   onChangeText={(text) => setValue("confirmPassword", text)}
+                  onFocus={() => setIsConfirmPasswordFocused(true)}
+                  onBlur={() => setIsConfirmPasswordFocused(false)}
                 />
                 <TouchableOpacity
                   style={styles.eyeIcon}
@@ -304,18 +339,10 @@ export default function RegisterScreen() {
               </View>
             </View>
 
-            <Pressable
-              onPress={handleSubmit(onSubmit)}
-              disabled={!isFormValid || loading}
-            >
-              <View
-                style={[
-                  styles.button,
-                  (!isFormValid || loading) && { opacity: 0.5 },
-                ]}
-              >
+            <Pressable onPress={handleSubmit(onSubmit)} disabled={loading}>
+              <View style={styles.button}>
                 <Text style={styles.buttonText}>
-                  {loading ? "Carregando..." : "Entrar"}
+                  {loading ? "Cadastrando..." : "Criar conta"}
                 </Text>
               </View>
             </Pressable>
@@ -328,17 +355,28 @@ export default function RegisterScreen() {
 
             <Text style={styles.socialText}>Criar conta com</Text>
 
-            <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
-              <View style={styles.googleContent}>
-                <Image
-                  source={{
-                    uri: "https://img.icons8.com/?size=512&id=17949&format=png",
-                  }}
-                  style={styles.googleIcon}
-                />
-                <Text style={styles.googleText}>Entrar com Google</Text>
-              </View>
-            </Pressable>
+            <View style={styles.socialButtons}>
+              <Pressable>
+                <View style={styles.facebookButton}>
+                  <View style={styles.facebookContent}>
+                    <Image source={facebookIcon} style={styles.facebookIcon} />
+                  </View>
+                </View>
+              </Pressable>
+              <Pressable
+                onPress={handleGoogleLogin}
+                style={styles.googleButton}
+              >
+                <View style={styles.googleContent}>
+                  <Image
+                    source={{
+                      uri: "https://img.icons8.com/?size=512&id=17949&format=png",
+                    }}
+                    style={styles.googleIcon}
+                  />
+                </View>
+              </Pressable>
+            </View>
           </View>
         </View>
       </ScrollView>

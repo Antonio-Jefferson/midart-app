@@ -26,36 +26,39 @@ export const registerSchema = z
       .string({ required_error: "A data de nascimento é obrigatória" })
       .refine(
         (value) => {
-          const regex = /^\d{2}\/\d{2}\/\d{2}$/;
+          const regex = /^\d{2}\/\d{2}\/\d{4}$/;
           return regex.test(value);
         },
         {
-          message: "Formato inválido.",
+          message: "Formato inválido. Use dd/mm/aaaa",
         }
       )
       .refine(
         (value) => {
           const [day, month, year] = value.split("/").map(Number);
-          const fullYear = year + 2000;
-          const date = new Date(fullYear, month - 1, day);
+          const date = new Date(year, month - 1, day);
           const now = new Date();
+
           const isValid =
-            date.getFullYear() === fullYear &&
+            date.getFullYear() === year &&
             date.getMonth() === month - 1 &&
             date.getDate() === day;
+
           if (!isValid) return false;
 
           const age =
             now.getFullYear() -
-            fullYear -
-            (now < new Date(fullYear, month - 1, day) ? 1 : 0);
+            year -
+            (now < new Date(year, month - 1, day) ? 1 : 0);
+
           return age >= 10;
         },
         {
-          message: "Data inválida ou menor de 13 anos",
+          message: "Data inválida ou menor de 10 anos",
         }
       ),
   })
+
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
     message: "As senhas não coincidem",
