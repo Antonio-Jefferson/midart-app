@@ -36,6 +36,7 @@
       "typedRoutes": true
     },
     "extra": {
+      "deepLinking": true,
       "router": {
         "origin": false
       },

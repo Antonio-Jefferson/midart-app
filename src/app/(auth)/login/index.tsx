@@ -196,7 +196,7 @@ export default function LoginScreen() {
           </View>
           <Text
             style={styles.forgotPassword}
-            onPress={() => router.push("/(auth)/main")}
+            onPress={() => router.push("/recover-password")}
           >
             Esqueceu a senha?
           </Text>

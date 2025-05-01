@@ -101,9 +101,8 @@ export const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
-
   passwordContainer: {
     position: "relative",
     justifyContent: "center",
