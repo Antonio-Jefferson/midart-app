@@ -23,8 +23,10 @@ export default function LoginScreen() {
     handleSubmit,
     setValue,
     formState: { errors },
+    watch,
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
+    mode: "onChange",
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,6 +35,14 @@ export default function LoginScreen() {
   const [keepConnected, setKeepConnected] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    register("email");
+    register("password");
+  }, [register]);
+
+  const email = watch("email");
+  const password = watch("password");
+  const isFormValid = email?.length > 0 && password?.length > 0;
   const onSubmit = async (data: LoginSchema) => {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
@@ -114,12 +124,20 @@ export default function LoginScreen() {
             ]}
             placeholderTextColor="#CBC2C2"
             placeholder="Digite seu email"
-            onChangeText={(text) => setValue("email", text)}
+            onChangeText={(text) =>
+              setValue("email", text, { shouldValidate: true })
+            }
             onFocus={() => setIsEmailFocused(true)}
             onBlur={() => setIsEmailFocused(false)}
           />
+
           {errors.email && (
-            <Text style={{ color: "red" }}>{errors.email.message}</Text>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Ionicons name="warning" size={15} color="red" />
+              <Text style={{ color: "red" }}>{errors.email.message}</Text>
+            </View>
           )}
         </View>
 
@@ -133,7 +151,9 @@ export default function LoginScreen() {
                 { borderColor: isPasswordFocused ? "#F4791A" : "#CBC2C2" },
               ]}
               placeholder="Insira sua senha"
-              onChangeText={(text) => setValue("password", text)}
+              onChangeText={(text) =>
+                setValue("password", text, { shouldValidate: true })
+              }
               onFocus={() => setIsPasswordFocused(true)}
               onBlur={() => setIsPasswordFocused(false)}
             />
@@ -148,6 +168,15 @@ export default function LoginScreen() {
               />
             </TouchableOpacity>
           </View>
+
+          {errors.password && (
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Ionicons name="warning" size={15} color="red" />
+              <Text style={{ color: "red" }}>{errors.password.message}</Text>
+            </View>
+          )}
         </View>
         <View style={styles.containerFooter}>
           <View
@@ -168,10 +197,23 @@ export default function LoginScreen() {
             </Pressable>
             <Text style={styles.meConnectText}>Mantenha-me conectado</Text>
           </View>
-          <Text style={styles.forgotPassword}>Esqueceu a senha?</Text>
+          <Text
+            style={styles.forgotPassword}
+            onPress={() => router.push("/(auth)/main")}
+          >
+            Esqueceu a senha?
+          </Text>
         </View>
-        <Pressable onPress={handleSubmit(onSubmit)}>
-          <View style={styles.button}>
+        <Pressable
+          onPress={handleSubmit(onSubmit)}
+          disabled={!isFormValid || loading}
+        >
+          <View
+            style={[
+              styles.button,
+              (!isFormValid || loading) && { opacity: 0.5 },
+            ]}
+          >
             <Text style={styles.buttonText}>
               {loading ? "Aguarde..." : "Entrar"}
             </Text>
