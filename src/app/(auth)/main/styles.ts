@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     width: "100%",
-    fontSize: 32,
+    fontSize: 26,
     color: "#fff",
     fontWeight: "bold",
     textAlign: "left", // já faz o alinhamento à esquerda

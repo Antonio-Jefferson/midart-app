@@ -147,7 +147,7 @@ export const styles = StyleSheet.create({
   },
 
   dontHaveAccount: {
-    fontSize: 17,
+    fontSize: 14,
     flexDirection: "row",
     alignItems: "center",
     color: "#275982",
