@@ -33,7 +33,7 @@ function AuthStack() {
       (_event, session) => {
         if (session) {
           setAuth(session.user);
-          router.replace("/(tabs)");
+          router.replace("/(drawer)/(tabs)/Index");
         } else {
           setAuth(null);
           router.replace("/(auth)/main");
@@ -58,7 +58,7 @@ function AuthStack() {
         name="(auth)/recover-password"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="/(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="/(tabs)/index" options={{ headerShown: false }} />
     </Stack>
   );
 }

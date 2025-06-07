@@ -1,13 +1,16 @@
-import { View } from "react-native";
-import { Image } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
-import SideMenu from "../side-menu/SideMenu";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerActions } from "@react-navigation/native";
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const isNototifications = true;
+  const navigation = useNavigation();
+
+  const handleMenuPress = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -17,20 +20,10 @@ export default function Header() {
         />
       </View>
       <View style={styles.containerIcons}>
-        <View style={styles.containerNotification}>
-          {isNototifications && <View style={styles.cicle}></View>}
-          <Ionicons name="notifications" size={24} color="white" />
-        </View>
-        <Ionicons
-          onPress={() => {
-            setMenuOpen(!menuOpen);
-          }}
-          name="menu"
-          size={24}
-          color="white"
-        />
+        <TouchableOpacity onPress={handleMenuPress}>
+          <Ionicons name="menu" size={24} color="white" />
+        </TouchableOpacity>
       </View>
-      {menuOpen && <SideMenu />}
     </View>
   );
 }
