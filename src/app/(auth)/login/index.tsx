@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { router } from "expo-router";
-import { styles } from "./styles";
+import { styles } from "./_styles";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase";
@@ -59,7 +59,7 @@ export default function LoginScreen() {
     }
 
     setLoading(false);
-    router.replace("/(system)/home");
+    router.replace("/(drawer)/(tabs)/Index");
   };
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function LoginScreen() {
         });
         return;
       }
-      router.replace("/(system)/home");
+      router.replace("/(drawer)/(tabs)/Index");
     } else {
       Toast.show({
         type: "error",

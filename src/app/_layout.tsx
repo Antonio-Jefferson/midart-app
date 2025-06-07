@@ -46,7 +46,6 @@ function AuthStack() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)/main" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)/login" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)/register" options={{ headerShown: false }} />
@@ -58,7 +57,10 @@ function AuthStack() {
         name="(auth)/recover-password"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="/(tabs)/index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(drawer)/(tabs)/Index"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }

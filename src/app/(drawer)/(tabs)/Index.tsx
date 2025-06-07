@@ -1,25 +1,8 @@
-import { supabase } from "@/lib/supabase";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { View, Text, Pressable, SafeAreaView, ScrollView } from "react-native";
+import { View, SafeAreaView, ScrollView } from "react-native";
 import Header from "@/components/header/Header";
 import PostComponent from "@/components/post-component/PostComponent";
-import Toast from "react-native-toast-message";
 
 export default function FeedScreen() {
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    await GoogleSignin.signOut();
-
-    if (error) {
-      Toast.show({
-        type: "error",
-        text1: "Erro ao sair",
-        text2: error.message,
-      });
-      return;
-    }
-  };
-
   return (
     <View style={{ flex: 1 }}>
       <Header />
@@ -30,9 +13,6 @@ export default function FeedScreen() {
           <PostComponent urlImage="https://blog.useartools.com.br/wp-content/uploads/2022/05/desenho-realista-rosto-feminino-1024x1024.webp" />
         </ScrollView>
       </SafeAreaView>
-      <Pressable onPress={handleSignOut}>
-        <Text>Sair</Text>
-      </Pressable>
     </View>
   );
 }

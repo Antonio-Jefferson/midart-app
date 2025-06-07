@@ -76,12 +76,6 @@ function SystemLayout() {
             ),
           }}
         />
-        <Tabs.Screen
-          name="Profile"
-          options={{
-            href: null,
-          }}
-        />
       </Tabs>
     </GestureHandlerRootView>
   );

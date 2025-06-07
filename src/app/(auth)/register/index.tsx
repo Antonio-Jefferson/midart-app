@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-native";
 import { router } from "expo-router";
-import { styles } from "./styles";
+import { styles } from "./_styles";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase";

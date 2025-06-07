@@ -5,7 +5,7 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-import { styles } from "./styles";
+import { styles } from "./_styles";
 import { Link } from "expo-router";
 
 export default function MainScreen() {
