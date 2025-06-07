@@ -10,7 +10,7 @@ import { router } from "expo-router";
 import { styles } from "./styles";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../../lib/supabase";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { loginSchema, LoginSchema } from "@/schemas/loginSchema";
 import { useForm } from "react-hook-form";

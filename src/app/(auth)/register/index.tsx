@@ -12,7 +12,7 @@ import { router } from "expo-router";
 import { styles } from "./styles";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../../lib/supabase";
 import { Picker } from "@react-native-picker/picker";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { zodResolver } from "@hookform/resolvers/zod";

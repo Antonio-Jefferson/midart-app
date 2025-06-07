@@ -8,7 +8,7 @@ import {
   resetPasswordSchema,
   ResetPasswordSchema,
 } from "@/schemas/resetPasswordSchema";
-import { supabase } from "@/app/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import Toast from "react-native-toast-message";
 
 const ResetPasswordScreen = () => {

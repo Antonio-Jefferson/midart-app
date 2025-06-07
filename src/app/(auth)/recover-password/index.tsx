@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import styles from "./styles";
-import { supabase } from "@/app/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import Toast from "react-native-toast-message";
 
 const PasswordRecoveryScreen = () => {

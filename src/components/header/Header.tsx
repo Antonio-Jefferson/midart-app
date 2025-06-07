@@ -13,7 +13,7 @@ export default function Header() {
       <View>
         <Image
           style={styles.logo}
-          source={require("../../../../assets/images/logo.png")}
+          source={require("@assets/images/logo.png")}
         />
       </View>
       <View style={styles.containerIcons}>

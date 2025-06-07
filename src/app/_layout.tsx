@@ -1,7 +1,7 @@
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { router, Stack } from "expo-router";
 import { useEffect } from "react";
-import { supabase } from "./lib/supabase";
+import { supabase } from "../lib/supabase";
 import Toast from "react-native-toast-message";
 import * as Linking from "expo-linking";
 
@@ -33,7 +33,7 @@ function AuthStack() {
       (_event, session) => {
         if (session) {
           setAuth(session.user);
-          router.replace("/(system)/home");
+          router.replace("/(tabs)");
         } else {
           setAuth(null);
           router.replace("/(auth)/main");
@@ -58,7 +58,7 @@ function AuthStack() {
         name="(auth)/recover-password"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="(system)/home" options={{ headerShown: false }} />
+      <Stack.Screen name="/(tabs)" options={{ headerShown: false }} />
     </Stack>
   );
 }

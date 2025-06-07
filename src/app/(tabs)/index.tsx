@@ -1,11 +1,11 @@
-import { supabase } from "@/app/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { View, Text, Pressable, SafeAreaView, ScrollView } from "react-native";
 import Header from "../../components/header/Header";
 import PostComponent from "../../components/post-component/PostComponent";
 import Toast from "react-native-toast-message";
 
-export default function HomeScreen() {
+export default function FeedScreen() {
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     await GoogleSignin.signOut();
