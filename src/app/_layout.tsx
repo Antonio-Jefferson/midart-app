@@ -61,6 +61,17 @@ function AuthStack() {
         name="(drawer)/(tabs)/Index"
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="modal"
+        options={{
+          title: "Comentários",
+          presentation: "modal",
+          animation: "slide_from_bottom",
+          gestureDirection: "vertical",
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

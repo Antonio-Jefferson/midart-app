@@ -36,18 +36,18 @@ export const styles = StyleSheet.create({
   },
 
   buttonFollow: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 50,
+    backgroundColor: "#FFFFFF",
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: "#275982",
+    alignItems: "center",
+    justifyContent: "center",
   },
+
   textFollow: {
-    fontSize: 14,
-    fontWeight: "regular",
     color: "#275982",
+    fontSize: 14,
   },
 });
